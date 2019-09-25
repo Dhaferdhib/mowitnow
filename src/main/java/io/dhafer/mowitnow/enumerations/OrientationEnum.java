@@ -1,10 +1,31 @@
 package io.dhafer.mowitnow.enumerations;
 
 public enum OrientationEnum {
-    N("NORTH"),
-    E("EST"),
-    S("SOUTH"),
-    W("WEST");
+    N("NORTH") {
+        @Override
+        public OrientationEnum changeDirection(ActionEnum actionEnum) {
+            return this.nextMove(actionEnum, E, W);
+        }
+    },
+    E("EST") {
+        @Override
+        public OrientationEnum changeDirection(ActionEnum actionEnum) {
+            return this.nextMove(actionEnum, S, N);
+        }
+    },
+    S("SOUTH"){
+        @Override
+        public OrientationEnum changeDirection(ActionEnum actionEnum) {
+            return this.nextMove(actionEnum, W, E);
+
+        }
+    },
+    W("WEST"){
+        @Override
+        public OrientationEnum changeDirection(ActionEnum actionEnum) {
+            return this.nextMove(actionEnum, N, S);
+        }
+    };
     private String abrevation;
 
     OrientationEnum(String abrevation) {
@@ -15,19 +36,14 @@ public enum OrientationEnum {
         return abrevation;
     }
 
-    public OrientationEnum changeDirection(ActionEnum actionEnum) {
-        if (actionEnum.equals(ActionEnum.D)) {
-            return values()[(this.ordinal() + 1) % values().length];
-        } else if (actionEnum.equals(ActionEnum.G)) {
-            int size;
-            if (this.ordinal() == 0)
-                size = values().length;
-            else
-                size = this.ordinal();
-            return values()[(size - 1) % values().length];
-        }
-        return this;
-    }
+    public abstract OrientationEnum changeDirection(ActionEnum actionEnum);
 
+    public OrientationEnum nextMove(ActionEnum actionEnum,OrientationEnum rightOrientation, OrientationEnum leftOrientation ){
+        switch (actionEnum) {
+            case D:return rightOrientation;
+            case G:return leftOrientation;
+            default:return this;
+        }
+    }
 
 }

@@ -23,7 +23,7 @@ public class Main {
         }
     }
 
-    public void resolveMower(File file) throws IOException {
+    private void resolveMower(File file) throws IOException {
         if(!file.isFile()){
             //throw exception
         }else{
